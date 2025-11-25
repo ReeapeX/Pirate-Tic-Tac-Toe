@@ -1,0 +1,171 @@
+/* Ein cooler Piraten-Font von Google */
+@import url("https://fonts.googleapis.com/css2?family=Trade+Winds&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Die Schriftart für alles */
+  font-family: "Trade Winds", cursive;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #3e2723; /* Dunkles Braun statt Schwarz */
+  overflow: hidden;
+
+  /* --- HINTERGRUND BILD --- */
+  /* Hier wird das generierte Bild eingebunden. Pfad anpassen wenn nötig! */
+  background-image: url("img/pirate-bg.png");
+  background-size: cover; /* Bild füllt den ganzen Schirm */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Ein Overlay, damit der Hintergrund nicht zu sehr ablenkt */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Dunkler Schleier */
+  z-index: -1;
+}
+
+/* Der Haupt-Container (sieht aus wie eine Holzkiste) */
+.pirate-container {
+  text-align: center;
+  width: 90%;
+  max-width: 450px;
+  /* Holz-Textur Farbe */
+  background: #8d6e63;
+  padding: 2rem;
+  border-radius: 15px;
+  /* Ein Rahmen wie aus Eisen */
+  border: 4px solid #4e342e;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  /* Muster das wie Holzplanken aussieht */
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.ahoy-title {
+  font-size: 2.2rem;
+  color: #ffeb3b; /* Goldgelb */
+  text-shadow: 2px 2px 4px #000;
+  margin-bottom: 1rem;
+}
+
+.status-plank {
+  background: #d7ccc8; /* Helles Holz/Pergament Farbe */
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px dashed #5d4037;
+  margin-bottom: 1.5rem;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Das Spielfeld-Gitter */
+.treasure-map-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 2rem;
+  aspect-ratio: 1 / 1;
+}
+
+/* Die einzelnen Felder (Altes Pergament) */
+.scroll-tile {
+  background-color: #fff8e1; /* Pergament-Farbe */
+  border-radius: 8px;
+  /* Ein Rahmen der wie verbranntes Papier aussieht */
+  border: 3px solid #8d6e63;
+  box-shadow: inset 0 0 10px rgba(93, 64, 55, 0.3);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  transition: transform 0.2s;
+}
+
+.scroll-tile:hover {
+  transform: scale(1.03);
+  background-color: #ffecb3;
+}
+
+/* --- FÜR DEIN JAVASCRIPT: Die Klassen für X und O --- */
+
+/* Klasse '.mark-x' für das X (Sieht aus wie mit Blut/roter Tinte gemalt) */
+.scroll-tile.mark-x {
+  color: #c62828; /* Dunkelrot */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Klasse '.mark-o' für das O (Sieht aus wie ein blauer Edelstein oder Tinte) */
+.scroll-tile.mark-o {
+  color: #01579b; /* Tiefblau */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Der Button (Die Planke) */
+.plank-button {
+  background: #5d4037; /* Dunkles Holz */
+  color: #ffeb3b; /* Goldener Text */
+  border: none;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  border-bottom: 4px solid #3e2723; /* 3D Effekt */
+  transition: all 0.1s;
+}
+
+.plank-button:hover {
+  background: #6d4c41;
+  transform: translateY(2px);
+  border-bottom: 2px solid #3e2723;
+}
+
+/* Fußzeile */
+.footer-log {
+  position: fixed;
+  bottom: 10px;
+  left: 15px;
+  font-size: 0.9rem;
+  color: #ffeb3b;
+  text-shadow: 1px 1px 2px #000;
+  opacity: 0.8;
+}
+
+/* Responsive Anpassung für kleine Handys */
+@media (max-width: 400px) {
+  .pirate-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  .ahoy-title {
+    font-size: 1.8rem;
+  }
+  .scroll-tile {
+    font-size: 2.8rem;
+    border-width: 2px;
+  }
+}
+
+.disabled {
+  pointer-events: none;
+}
