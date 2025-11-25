@@ -97,8 +97,10 @@ function checkResult() {
       if (valA == "X") {
         statusText.textContent =
           "Arrgh! Du hast den Schatz geborgen, Käpt'n! 💰";
+        statusText.classList.add("status-win");
       } else if (valB == "O") {
         statusText.textContent = "Ab über die Planke mit dir, du Landratte! 🦈";
+        statusText.classList.add("status-lose");
       }
     }
   }
@@ -108,6 +110,7 @@ function checkResult() {
     console.log("Unentschieden");
     statusText.textContent =
       "Beim Klabautermann! Das Pulver ist verschossen. (Remis) 💣";
+    statusText.classList.add("status-draw");
   }
 }
 function resetGame() {
@@ -116,7 +119,7 @@ function resetGame() {
   end = false;
 
   // Hier sauber durch ALLE Zellen gehen und aufräumen
-
+  statusText.className = "";
   cells.forEach(function (c) {
     c.innerText = "";
     c.classList.remove("mark-x");
