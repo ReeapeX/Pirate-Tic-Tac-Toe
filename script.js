@@ -24,7 +24,10 @@ cells.forEach(function (cell) {
 
       console.log("X gedrückt an " + [index] + " " + options);
       checkResult();
-      computerTurn(cell);
+
+      if (!end) {
+        computerTurn(cell);
+      }
     }
   });
 });
@@ -57,6 +60,7 @@ function computerTurn(cell) {
 }
 
 function checkResult() {
+  let gewonnen = false;
   const winConditions = [
     [0, 1, 2],
     [3, 4, 5],
@@ -88,7 +92,7 @@ function checkResult() {
 
     if (valA != "" && valA == valB && valB == valC) {
       // Gewonnen!
-
+      gewonnen = true;
       end = true;
 
       cells.forEach((t) => t.classList.add("disabled"));
@@ -101,10 +105,24 @@ function checkResult() {
       } else if (valB == "O") {
         statusText.textContent = "Ab über die Planke mit dir, du Landratte! 🦈";
         statusText.classList.add("status-lose");
+        document.body.classList.add("sinking");
+        setTimeout(function () {
+          // A. Die "Hoch"-Animation stoppen
+          document.body.classList.remove("sinking");
+
+          // B. Die "Runter"-Animation starten
+          document.body.classList.add("draining");
+
+          // C. Aufräumen: Wenn das Wasser ganz unten ist (nach 1.5s Animation),
+          // die Klasse ganz entfernen, damit der Body wieder sauber ist.
+          setTimeout(function () {
+            document.body.classList.remove("draining");
+          }, 5000); // Muss solange dauern wie die CSS-Animation (1.5s)
+        }, 2000);
       }
     }
   }
-  if (options.includes("") == false) {
+  if (options.includes("") == false && gewonnen == false) {
     end = true;
     cells.forEach((t) => t.classList.add("disabled"));
     console.log("Unentschieden");
@@ -114,6 +132,7 @@ function checkResult() {
   }
 }
 function resetGame() {
+  document.body.classList.remove("sinking");
   statusText.textContent = "Ahoi! Spieler X beginnt.";
   options = ["", "", "", "", "", "", "", "", ""];
   end = false;

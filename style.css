@@ -56,6 +56,9 @@ body {
   box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8),
     /* Schatten innen */ 0 20px 50px rgba(0, 0, 0, 0.7),
     /* Schatten außen */ 0 0 0 10px rgba(62, 39, 35, 0.5); /* Äußerer Holzring */
+
+  /* Wichtig für die Wackel-Animation beim Untergang */
+  transition: transform 0.5s;
 }
 
 /* Dekorative Schrauben in den Ecken (Pseudo-Elemente) */
@@ -219,7 +222,7 @@ body {
   letter-spacing: 2px;
 }
 
-/* --- ANIMATIONEN FÜR DEN STATUS TEXT (Overkill & Readable) --- */
+/* --- ANIMATIONEN FÜR DEN STATUS TEXT --- */
 
 /* 1. GEWONNEN (Gold Fix) */
 .status-win {
@@ -246,7 +249,7 @@ body {
   }
 }
 
-/* 2. VERLOREN (Wasser) */
+/* 2. VERLOREN (Wasser Text) */
 .status-lose {
   color: #4fc3f7 !important; /* Helles Eisblau */
   text-shadow: 2px 2px 0 #01579b, 0 0 10px rgba(79, 195, 247, 0.6);
@@ -299,5 +302,102 @@ body {
   }
   .scroll-tile {
     font-size: 2.5rem;
+  }
+}
+
+/* --- DER "UNTERGANGS"-EFFEKT (SINKING EFFECT) --- */
+/* Ersetzt den alten Splash. Keine Bilder nötig! */
+
+/* 1. Das Wasser, das hochsteigt */
+/* 1. Das Wasser (Jetzt transparent wie Glas) */
+body.sinking::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%; /* Startet unten */
+
+  /* NEU: Viel transparenter (0.4 und 0.1 statt 0.9) */
+  /* Sieht aus wie klares Karibik-Wasser */
+  background: linear-gradient(
+    to top,
+    rgba(0, 60, 130, 0.4),
+    rgba(0, 100, 200, 0.1)
+  );
+
+  /* NEU: Nur ganz leicht unscharf, damit man alles lesen kann */
+  backdrop-filter: blur(2px) hue-rotate(180deg);
+
+  z-index: 999;
+  pointer-events: none;
+
+  /* Animation starten */
+  animation: flood-screen 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 2. Das Spielfeld schwimmt leicht */
+body.sinking .pirate-container {
+  animation: float-away 3s ease-in-out infinite;
+}
+
+/* Animation: Wasserpegel steigt bis ganz oben, bleibt aber durchsichtig */
+@keyframes flood-screen {
+  0% {
+    height: 0%;
+    border-top: 5px solid rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    height: 100%;
+    border-top: 0px solid transparent;
+  }
+}
+
+@keyframes float-away {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1deg) translateY(-5px);
+  } /* Nur noch ganz leichtes Wackeln */
+  100% {
+    transform: rotate(-1deg) translateY(0);
+  }
+}
+
+/* --- DAS WASSER FLIESST AB (DRAINING) --- */
+body.draining::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Wichtig: Wir starten bei voll (100%) */
+  height: 100%;
+
+  /* Gleicher Look wie beim Sinking */
+  background: linear-gradient(
+    to top,
+    rgba(0, 60, 130, 0.4),
+    rgba(0, 100, 200, 0.1)
+  );
+  backdrop-filter: blur(2px) hue-rotate(180deg);
+
+  z-index: 999;
+  pointer-events: none;
+
+  /* Animation: Abfließen (1.5 Sekunden) */
+  animation: drain-screen 1.5s ease-in forwards;
+}
+
+/* Die Bewegung von oben nach unten */
+@keyframes drain-screen {
+  0% {
+    height: 100%;
+    border-top: 0px solid transparent;
+  }
+  100% {
+    height: 0%;
+    border-top: 5px solid rgba(255, 255, 255, 0.5);
   }
 }
